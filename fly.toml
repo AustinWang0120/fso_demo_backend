@@ -1,4 +1,4 @@
-# fly.toml file generated for fso-demo on 2023-03-14T03:09:37-04:00
+# fly.toml file generated for fso-demo on 2023-03-14T03:15:26-04:00
 
 app = "fso-demo"
 kill_signal = "SIGINT"
