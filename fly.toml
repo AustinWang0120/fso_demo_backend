@@ -1,6 +1,6 @@
-# fly.toml file generated for fso-demo-backend on 2023-03-14T02:32:49-04:00
+# fly.toml file generated for fso-demo on 2023-03-14T03:09:37-04:00
 
-app = "fso-demo-backend"
+app = "fso-demo"
 kill_signal = "SIGINT"
 kill_timeout = 5
 primary_region = "bos"
