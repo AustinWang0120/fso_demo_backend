@@ -1,6 +1,28 @@
 const express = require("express")
 const cors = require("cors")
+const mongoose = require("mongoose")
 
+// database setup
+const password = "bobby2000"
+const url = `mongodb+srv://yyaustin:${password}@cluster0.67lc8j3.mongodb.net/fso-demo?retryWrites=true&w=majority`
+mongoose.set("strictQuery", false)
+mongoose.connect(url)
+
+const noteSchema = new mongoose.Schema({
+  content: String,
+  important: Boolean,
+})
+noteSchema.set("toJSON", {
+  transform: (document, returnedObject) => {
+    returnedObject.id = returnedObject._id.toString()
+    delete returnedObject._id
+    delete returnedObject.__v
+  }
+})
+
+const Note = mongoose.model("Note", noteSchema)
+
+// server setup
 const app = express()
 
 const requestLogger = (req, res, next) => {
@@ -39,7 +61,9 @@ app.get("/", (req, res) => {
 })
 
 app.get("/api/notes", (req, res) => {
-  res.json(notes)
+  Note.find({}).then((notes) => {
+    res.json(notes)
+  })
 })
 
 app.get("/api/notes/:id", (req, res) => {
