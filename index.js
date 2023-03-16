@@ -59,7 +59,7 @@ app.get("/api/notes/:id", (req, res, next) => {
     .catch((error) => (next(error)))
 })
 
-app.post("/api/notes", (req, res) => {
+app.post("/api/notes", (req, res, next) => {
   const body = req.body
 
   if (body.content === undefined) {
@@ -76,6 +76,7 @@ app.post("/api/notes", (req, res) => {
   note.save().then((savedNote) => {
     res.json(savedNote)
   })
+  .catch((error) => (next(error)))
 })
 
 app.put("/api/notes/:id", (req, res, next) => {
@@ -86,7 +87,7 @@ app.put("/api/notes/:id", (req, res, next) => {
     important: body.important,
   }
 
-  Note.findByIdAndUpdate(req.params.id, note, {new: true})
+  Note.findByIdAndUpdate(req.params.id, note, {new: true, runValidators: true, context: "query"})
     .then((updatedNote) => {
       res.json(updatedNote)
     })
@@ -115,8 +116,11 @@ const errorHandler = (error, req, res, next) => {
     return res.status(400).send({
       error: "malformatted id"
     })
+  } else if (error.name === "ValidationError") {
+    return res.status(400).send({
+      error: error.message
+    })
   }
-
   next(error)
 }
 app.use(errorHandler)
