@@ -19,24 +19,6 @@ app.use(express.json())
 app.use(requestLogger)
 app.use(cors())
 
-let notes = [
-  {
-    id: 1,
-    content: "HTML is easy",
-    important: true
-  },
-  {
-    id: 2,
-    content: "Browser can execute only JavaScript",
-    important: false
-  },
-  {
-    id: 3,
-    content: "GET and POST are the most important methods of HTTP protocol",
-    important: true
-  }
-]
-
 app.get("/", (req, res) => {
   res.send("<h1>Hello World</h1>")
 })
@@ -75,8 +57,7 @@ app.post("/api/notes", (req, res, next) => {
 
   note.save().then((savedNote) => {
     res.json(savedNote)
-  })
-  .catch((error) => (next(error)))
+  }).catch((error) => (next(error)))
 })
 
 app.put("/api/notes/:id", (req, res, next) => {
@@ -87,7 +68,7 @@ app.put("/api/notes/:id", (req, res, next) => {
     important: body.important,
   }
 
-  Note.findByIdAndUpdate(req.params.id, note, {new: true, runValidators: true, context: "query"})
+  Note.findByIdAndUpdate(req.params.id, note, { new: true, runValidators: true, context: "query" })
     .then((updatedNote) => {
       res.json(updatedNote)
     })
@@ -96,7 +77,7 @@ app.put("/api/notes/:id", (req, res, next) => {
 
 app.delete("/api/notes/:id", (req, res, next) => {
   Note.findByIdAndRemove(req.params.id)
-    .then((removedNote) => {
+    .then(() => {
       res.status(204).end()
     })
     .catch((error) => (next(error)))

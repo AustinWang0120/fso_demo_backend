@@ -19,12 +19,12 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model("Note", noteSchema)
 
-const note = new Note({
-  content: "GET and POST are the most important methods of HTTP protocol",
-  important: true
-})
+// const note = new Note({
+//   content: "GET and POST are the most important methods of HTTP protocol",
+//   important: true
+// })
 
-Note.find({important: true}).then((result) => {
+Note.find({ important: true }).then((result) => {
   result.forEach((note) => {
     console.log(note)
   })
