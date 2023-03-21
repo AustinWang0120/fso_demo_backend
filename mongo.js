@@ -7,7 +7,7 @@ if (process.argv.length < 3) {
 
 const password = process.argv[2]
 
-const url = `mongodb+srv://yyaustin:${password}@cluster0.67lc8j3.mongodb.net/fso-demo?retryWrites=true&w=majority`
+const url = `mongodb+srv://yyaustin:${password}@cluster0.67lc8j3.mongodb.net/fso-demo-test?retryWrites=true&w=majority`
 
 mongoose.set("strictQuery", false)
 mongoose.connect(url)
@@ -19,14 +19,28 @@ const noteSchema = new mongoose.Schema({
 
 const Note = mongoose.model("Note", noteSchema)
 
-// const note = new Note({
-//   content: "GET and POST are the most important methods of HTTP protocol",
-//   important: true
-// })
-
-Note.find({ important: true }).then((result) => {
-  result.forEach((note) => {
-    console.log(note)
-  })
-  mongoose.connection.close()
+const note = new Note({
+  content: "GET and POST are the most important methods of HTTP protocol",
+  important: true
 })
+
+const note2 = new Note({
+  content: "Let us learn some Vue.js and Firebase",
+  important: false
+})
+
+const saveNotes = async () => {
+  await note.save()
+  await note2.save()
+  console.log("Saved note and note2")
+  await mongoose.connection.close()
+}
+
+saveNotes()
+
+// Note.find({ important: true }).then((result) => {
+//   result.forEach((note) => {
+//     console.log(note)
+//   })
+//   mongoose.connection.close()
+// })
